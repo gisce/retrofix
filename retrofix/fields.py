@@ -36,7 +36,7 @@ from .exception import RetrofixException
 
 __all__ = ['Field', 'Char', 'Const', 'Account', 'Number', 'Numeric', 'Integer',
     'Date', 'Selection', 'Boolean', 'SIGN_DEFAULT', 'SIGN_12', 'SIGN_N',
-    'SIGN_POSITIVE', 'BOOLEAN_01', 'BOOLEAN_12', 'BOOLEAN_X']
+    'SIGN_POSITIVE', 'BOOLEAN_01', 'BOOLEAN_12', 'BOOLEAN_X', 'BOOLEAN_W1']
 
 
 class Field(object):
@@ -263,6 +263,11 @@ BOOLEAN_X = {
     False: ' ',
     }
 
+BOOLEAN_W1 = {
+    True: '1',
+    False: ' ',
+    }
+
 
 class Boolean(Field):
     def __init__(self, formatting=None):
@@ -272,7 +277,7 @@ class Boolean(Field):
         self._formatting = formatting
 
     def set_from_file(self, value):
-        for key, text in self._formatting:
+        for key, text in self._formatting.items():
             if value == text:
                 return key
         raise RetrofixException('Invalid value "%s" for boolean field "%s"' % (
