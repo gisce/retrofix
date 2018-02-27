@@ -36,7 +36,7 @@ from .exception import RetrofixException
 
 __all__ = ['Field', 'Char', 'Const', 'Account', 'Number', 'Numeric', 'Integer',
     'Date', 'Selection', 'Boolean', 'SIGN_DEFAULT', 'SIGN_12', 'SIGN_N',
-    'SIGN_POSITIVE', 'BOOLEAN_01', 'BOOLEAN_12', 'BOOLEAN_X', 'BOOLEAN_W1']
+    'SIGN_POSITIVE', 'BOOLEAN_01', 'BOOLEAN_12', 'BOOLEAN_X', 'BOOLEAN_W1', 'DateNone']
 
 
 class Field(object):
@@ -227,6 +227,23 @@ class Date(Field):
     def set(self, value):
         assert value, datetime
         return super(Date, self).set(value)
+
+
+class DateNone(Date):
+    def __init__(self, pattern):
+        Date.__init__(self, pattern)
+        #super(Date, self).__init__(pattern)
+        #self._pattern = pattern
+
+    def set_from_file(self, value):
+        if value == '0' * len(value) or value == ' ' * len(value):
+            return
+        try:
+            return datetime.strptime(value, self._pattern)
+        except ValueError:
+            raise RetrofixException('Invalid date value "%s" does not '
+                    'match pattern "%s" in field "%s"' % (value,
+                    self._pattern, self._name))
 
 
 class Selection(Char):
