@@ -243,6 +243,13 @@ class DateNone(Date):
                     'match pattern "%s" in field "%s"' % (value,
                     self._pattern, self._name))
 
+    def get_for_file(self, value):
+        if value is None:
+            return False
+        else:
+            res = datetime.strftime(value, self._pattern)
+        return super(Date, self).get_for_file(res)
+
 
 class Selection(Char):
     def __init__(self, selection):
