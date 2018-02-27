@@ -232,8 +232,6 @@ class Date(Field):
 class DateNone(Date):
     def __init__(self, pattern):
         Date.__init__(self, pattern)
-        #super(Date, self).__init__(pattern)
-        #self._pattern = pattern
 
     def set_from_file(self, value):
         if value == '0' * len(value) or value == ' ' * len(value):
